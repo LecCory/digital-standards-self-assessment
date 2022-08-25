@@ -4,12 +4,12 @@
 # pass (this can be a secret value)
 # project: Name of the project
 
-trigger:
-  - main
+
+trigger: none
 pool:
-  vmImage: windows-latest
+  name: SelfPool
 variables:
-  AzureSub: "cipher-docio-svc-connection-devops"
+  AzureSub: 'Azure subscription 1 (1ff6c602-69fe-454f-a795-de22a178a6c0)'
 stages:
   - stage: "Pulumi"
     variables:
@@ -25,10 +25,10 @@ stages:
             inputs:
               azureSubscription: $(AzureSub)
               scriptType: "ps"
-              workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
+              workingDirectory: '$(Build.SourcesDirectory)/infrastructure'
               addSpnToEnvironment: true
               scriptLocation: scriptPath
-              scriptPath: '$(Build.SourcesDirectory)\infrastructure\helperScripts\pulumiBackendConfig.ps1'
+              scriptPath: '$(Build.SourcesDirectory)/infrastructure/helperScripts/pulumiBackendConfig.ps1'
             name: backend
             displayName: Create Backend
 
