@@ -1,11 +1,11 @@
 parameters:
   faName: ""
-  AzureSub: ""
+  azureSubscription: ""
 
 steps:
   - task: AzureCLI@2
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "inlineScript"
       inlineScript: "func azure functionapp publish ${{ parameters.faName }}"

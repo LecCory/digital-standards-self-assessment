@@ -3,7 +3,7 @@ parameters:
   apiURL: ""
   rgName: ""
   apiGWName: ""
-  AzureSub: ""
+  azureSubscription: ""
 
 steps:
   - task: CmdLine@2
@@ -20,7 +20,7 @@ steps:
   - task: AzureCLI@2
     displayName: Import OpenAPI file into APIM
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "inlineScript"
       inlineScript: |

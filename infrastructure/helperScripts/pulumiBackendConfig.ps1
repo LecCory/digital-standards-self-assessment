@@ -62,7 +62,7 @@ if("true" -eq (az group exists -n $env:RG_NAME)){
 Expose the Keyvault, Storage key and Storage account name to the pipeline so the infrastructure deployment can 
 call our self hosted stack in blob storage
 #>
-Write-Host "##vso[task.setvariable variable=saAccount;isOutput=true]$env:AZURE_STORAGE_ACCOUNT"
-Write-Host "##vso[task.setvariable variable=container;isOutput=true]$env:sContainerName"
-Write-Host "##vso[task.setvariable variable=storageKey;isOutput=true]$env:AZURE_STORAGE_KEY"
-Write-Host "##vso[task.setvariable variable=currentAPIM;isOutput=true]$env:APIM_NAME"
+Write-Host "##vso[task.setvariable variable=saAccount;isSecret=true;isOutput=true]$env:AZURE_STORAGE_ACCOUNT"
+Write-Host "##vso[task.setvariable variable=container;isSecret=true;isOutput=true]$env:sContainerName"
+Write-Host "##vso[task.setvariable variable=storageKey;isSecret=true;isOutput=true]$env:AZURE_STORAGE_KEY"
+Write-Host "##vso[task.setvariable variable=currentAPIM;isSecret=true;isOutput=true]$env:APIM_NAME"

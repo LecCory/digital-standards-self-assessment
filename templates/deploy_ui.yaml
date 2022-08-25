@@ -2,7 +2,7 @@ parameters:
   storageAccount: ""
   saKey: ""
   apiURL: ""
-  AzureSub: ""
+  azureSubscription: ""
 
 steps:
   - task: CmdLine@2
@@ -23,11 +23,11 @@ steps:
       AZURE_STORAGE_KEY: ${{ parameters.saKey }}
       AZURE_STORAGE_ACCOUNT: ${{ parameters.storageAccount }}
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "inlineScript"
       inlineScript: |
-        az storage blob delete-batch --account-name ${{ parameters.storageAccount }} --source `$web
+        az storage blob delete-batch --account-name ${{ parameters.storageAccount }} --source "\$web"
         az storage blob upload-batch --destination `$web --account-name ${{ parameters.storageAccount }} --source . --overwrite
       addSpnToEnvironment: true
       workingDirectory: "ui/dist"
