@@ -2,7 +2,7 @@ parameters:
   beStorageKey: ""
   beContainer: ""
   beStorageAccount: ""
-  AzureSub: ""
+  azureSubscription: ""
   existingAPIM: ""
 
 steps:
@@ -22,7 +22,7 @@ steps:
       AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
 
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "scriptPath"
       scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/createStack.ps1"
@@ -38,7 +38,7 @@ steps:
       AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
       CURRENT_APIM: ${{ parameters.existingAPIM }}
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       command: "up"
       args: "-y -f --suppress-outputs"
       loginArgs: "azblob://${{ parameters.beContainer }}"
@@ -54,7 +54,7 @@ steps:
       AZURE_STORAGE_KEY: ${{ parameters.beStorageKey }}
       AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
     inputs:
-      azureSubscription: ${{ parameters.AzureSub }}
+      azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "scriptPath"
       scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/retrievePulumiOutputs.ps1"
