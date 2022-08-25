@@ -8,7 +8,7 @@ trigger: none
 pool:
   name: SelfPool
 variables:
-  AzureSub: "Azure subscription 1 (1ff6c602-69fe-454f-a795-de22a178a6c0)"
+  AzureSub: "Azure subscription 1(1)(1ff6c602-69fe-454f-a795-de22a178a6c0)"
 stages:
   - stage: "Pulumi"
     variables:
