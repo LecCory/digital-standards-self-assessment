@@ -25,8 +25,8 @@ steps:
       azureSubscription: ${{ parameters.AzureSub }}
       scriptType: "ps"
       scriptLocation: "scriptPath"
-      scriptPath: '$(Build.SourcesDirectory)\infrastructure\helperScripts\createStack.ps1'
-      workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
+      scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/createStack.ps1"
+      workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
 
   - task: Pulumi@1
     displayName: "Pulumi Up"
@@ -57,6 +57,6 @@ steps:
       azureSubscription: ${{ parameters.AzureSub }}
       scriptType: "ps"
       scriptLocation: "scriptPath"
-      scriptPath: '$(Build.SourcesDirectory)\infrastructure\helperScripts\retrievePulumiOutputs.ps1'
-      workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
+      scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/retrievePulumiOutputs.ps1"
+      workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
     name: pulumiOutputs
