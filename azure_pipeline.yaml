@@ -25,10 +25,10 @@ stages:
             inputs:
               azureSubscription: $(AzureSub)
               scriptType: "ps"
-              workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
+              workingDirectory: '$(Build.SourcesDirectory)/infrastructure'
               addSpnToEnvironment: true
               scriptLocation: scriptPath
-              scriptPath: '$(Build.SourcesDirectory)\infrastructure\helperScripts\pulumiBackendConfig.ps1'
+              scriptPath: '$(Build.SourcesDirectory)/infrastructure/helperScripts/pulumiBackendConfig.ps1'
             name: backend
             displayName: Create Backend
 
