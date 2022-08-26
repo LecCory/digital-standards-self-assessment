@@ -17,9 +17,9 @@ export const dbAccount = new documentdb.DatabaseAccount(`${env}-${project}-dbacc
   ],
   resourceGroupName: resourceGroup.name,
 });
-export const mongoDB = new documentdb.MongoDBResourceMongoDBDatabase(`test`, {
+export const mongoDB = new documentdb.MongoDBResourceMongoDBDatabase(`${project}-db`, {
   accountName: dbAccount.name,
-  resource: { id: `test` },
+  resource: { id: `${project}-db` },
   resourceGroupName: resourceGroup.name,
   location: resourceGroup.location,
 });

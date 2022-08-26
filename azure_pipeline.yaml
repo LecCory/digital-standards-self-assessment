@@ -73,9 +73,9 @@ stages:
               azureSubscription: $(AzureSub)
 
       - job: "Configure_API_GW"
-        dependsOn: 
-         - Deploy_Infra
-         - Deploy_API
+        dependsOn:
+          - Deploy_Infra
+          - Deploy_API
         condition: succeeded()
         variables:
           faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
@@ -92,9 +92,9 @@ stages:
               rgName: $(rgName)
               azureSubscription: $(AzureSub)
       - job: "Deploy_UI"
-        dependsOn: 
-         - Deploy_Infra
-         - Configure_API_GW
+        dependsOn:
+          - Deploy_Infra
+          - Configure_API_GW
         condition: succeeded()
         variables:
           apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
@@ -110,15 +110,16 @@ stages:
               azureSubscription: $(AzureSub)
 
       - job: "ImportData"
-        dependsOn: 
-         - Deploy_Infra
-         - Deploy_UI
+        dependsOn:
+          - Deploy_Infra
+          - Deploy_UI
         condition: succeeded()
         variables:
           dbString: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectDBString']]
         steps:
           - template: templates/import_data.yaml
             parameters:
+              projectName: $(project)
               dbString: $(dbString)
 
       - job: "Output_Static_URL"

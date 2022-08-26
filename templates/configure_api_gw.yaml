@@ -25,6 +25,20 @@ steps:
       scriptLocation: "inlineScript"
       inlineScript: |
         az apim api import -g ${{ parameters.rgName }} --service-name ${{ parameters.apiGWName }} --path api --specification-path ./swagger.json --specification-format OpenApiJson --api-id ${{ parameters.faName }} --subscription-required false
+       
+      workingDirectory: "$(Build.SourcesDirectory)\infrastructure"
+  
+  - task: AzurePowerShell@5
+    displayName: Import APIM policy
+    inputs:
+      azureSubscription: 'Azure subscription 1 (1ff6c602-69fe-454f-a795-de22a178a6c0)'
+      ScriptType: 'InlineScript'
+      Inline: |
+        Install-Module Az.ApiManagement -Scope CurrentUser -Force
+        Import-Module Az.ApiManagement -Force
+        
         $apimContext = New-AzApiManagementContext -ResourceGroupName ${{ parameters.rgName }} -ServiceName ${{ parameters.apiGWName }}
-        Set-AzApiManagementPolicy -Context $apimContext -ApiId ${{ parameters.faName }} -PolicyFilePath "./newPolicy.xml"
-      workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
+                Set-AzApiManagementPolicy -Context $apimContext -ApiId ${{ parameters.faName }} -PolicyFilePath "./newPolicy.xml"
+      errorActionPreference: 'continue'
+      azurePowerShellVersion: 'LatestVersion'
+      workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
