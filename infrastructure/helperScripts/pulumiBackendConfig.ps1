@@ -3,12 +3,7 @@
 In this script we build the back end where the state referred to as stack will will be stored
 This script creates a new Resource group, storage account and keyvault with an encryption key
 #>
-try {
-    winget install pulumi
-}
-catch {
-    "Winget not not available see exception: $($_)"
-}
+echo "name: $env:ENV-$env:PROJECT_NAME`nruntime: nodejs`ndescription: A full backend deployment for the ${env:PROJECT_NAME} project's ${env:ENV} environment" > Pulumi.yaml
 
 $env:PULUMI_SKIP_UPDATE_CHECK="true"
 
