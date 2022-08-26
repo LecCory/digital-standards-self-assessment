@@ -116,18 +116,18 @@ stages:
               storageAccount: $(storageAccount)
               azureSubscription: $(AzureSub)
 
-      - job: "Import_Data"
-        dependsOn:
-          - Deploy_Infra
-          - Deploy_UI
-        condition: succeeded()
-        variables:
-          dbString: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectDBString']]
-        steps:
-          - template: templates/import_data.yaml
-            parameters:
-              projectName: $(project)
-              dbString: $(dbString)
+      # - job: "Import_Data"
+      #   dependsOn:
+      #     - Deploy_Infra
+      #     - Deploy_UI
+      #   condition: succeeded()
+      #   variables:
+      #     dbString: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectDBString']]
+      #   steps:
+      #     - template: templates/import_data.yaml
+      #       parameters:
+      #         projectName: $(project)
+      #         dbString: $(dbString)
 
       - job: "Output_Static_URL"
         dependsOn:
@@ -136,7 +136,7 @@ stages:
           - Deploy_API
           - Configure_API_GW
           - Deploy_UI
-          - Import_Data
+          # - Import_Data
         condition: and(succeeded('ImportData'),succeeded('Deploy_UI'),succeeded('Configure_API_GW'),succeeded('Deploy_API'),succeeded('Build_API'),succeeded('Deploy_Infra'))
         variables:
           staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
