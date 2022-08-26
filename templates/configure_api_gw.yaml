@@ -6,16 +6,20 @@ parameters:
   azureSubscription: ""
 
 steps:
-  - task: CmdLine@2
-    displayName: Build OpenAPI file
+  - task: AzurePowerShell@5
+    displayName: Build OpenAPI and Policy files
     env:
       FANAME: ${{ parameters.faName }}
       APIURL: ${{ parameters.apiURL }}
     inputs:
-      script: |
+      azureSubscription: ${{ parameters.azureSubscription }}
+      ScriptType: "InlineScript"
+      Inline: |
         npm i js-yaml
         node fixSwagger.js
         node fixAPIMPolicy.js
+      errorActionPreference: "continue"
+      azurePowerShellVersion: "LatestVersion"
       workingDirectory: "$(Build.SourcesDirectory)/infrastructure/helperScripts"
 
   - task: AzureCLI@2
@@ -32,7 +36,7 @@ steps:
   - task: AzurePowerShell@5
     displayName: Import APIM policy
     inputs:
-      azureSubscription: "Azure subscription 1 (1ff6c602-69fe-454f-a795-de22a178a6c0)"
+      azureSubscription: ${{ parameters.azureSubscription }}
       ScriptType: "InlineScript"
       Inline: |
         Install-Module Az.ApiManagement -Scope CurrentUser -Force
