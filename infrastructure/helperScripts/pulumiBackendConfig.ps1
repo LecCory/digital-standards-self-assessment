@@ -3,6 +3,12 @@
 In this script we build the back end where the state referred to as stack will will be stored
 This script creates a new Resource group, storage account and keyvault with an encryption key
 #>
+try {
+    winget install pulumi
+}
+catch(e) {
+    {Write-Host "Winget not not available see exception:`n${e}"}
+}
 
 $env:PULUMI_SKIP_UPDATE_CHECK="true"
 
