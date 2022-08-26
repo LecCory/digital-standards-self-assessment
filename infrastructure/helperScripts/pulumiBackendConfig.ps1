@@ -7,7 +7,7 @@ try {
     winget install pulumi
 }
 catch {
-    "Winget not not available see exception: $($_)" + 
+    "Winget not not available see exception: $($_)"
 }
 
 $env:PULUMI_SKIP_UPDATE_CHECK="true"
