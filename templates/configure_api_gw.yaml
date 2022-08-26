@@ -38,7 +38,7 @@ steps:
         Import-Module Az.ApiManagement -Force
         
         $apimContext = New-AzApiManagementContext -ResourceGroupName ${{ parameters.rgName }} -ServiceName ${{ parameters.apiGWName }}
-                Set-AzApiManagementPolicy -Context $apimContext -ApiId ${{ parameters.faName }} -PolicyFilePath "./newPolicy.xml"
+        Set-AzApiManagementPolicy -Context $apimContext -ApiId ${{ parameters.faName }} -PolicyFilePath "./newPolicy.xml"
       errorActionPreference: 'continue'
       azurePowerShellVersion: 'LatestVersion'
       workingDirectory: '$(Build.SourcesDirectory)\infrastructure'
