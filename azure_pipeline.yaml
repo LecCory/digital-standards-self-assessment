@@ -75,7 +75,7 @@ stages:
       - job: "Configure_API_GW"
         dependsOn:
           - Deploy_Infra
-          - Deploy_API
+
         condition: succeeded()
         variables:
           faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
