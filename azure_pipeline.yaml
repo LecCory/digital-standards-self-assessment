@@ -33,7 +33,7 @@ stages:
 
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/Pulumi.yaml"
+              targetPath: "$(Build.SourcesDirectory)/infrastructure/Pulumi.yaml"
               artifact: "pulumifile"
               publishLocation: "pipeline"
             displayName: Publish Pulumi instruction File
