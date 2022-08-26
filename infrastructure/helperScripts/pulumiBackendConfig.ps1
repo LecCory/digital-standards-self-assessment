@@ -4,9 +4,8 @@ In this script we build the back end where the state referred to as stack will w
 This script creates a new Resource group, storage account and keyvault with an encryption key
 #>
 Write-Host "name: $env:ENV-$env:PROJECT_NAME`nruntime: nodejs`ndescription: A full backend deployment for the ${env:PROJECT_NAME} project's ${env:ENV} environment" 
-Write-Host "name: $env:ENV-$env:PROJECT_NAME`nruntime: nodejs`ndescription: A full backend deployment for the ${env:PROJECT_NAME} project's ${env:ENV} environment" > Pulumi.yaml
-pwd
-ls
+Write-Output "name: $env:ENV-$env:PROJECT_NAME`nruntime: nodejs`ndescription: A full backend deployment for the ${env:PROJECT_NAME} project's ${env:ENV} environment" > Pulumi.yaml
+
 $env:PULUMI_SKIP_UPDATE_CHECK="true"
 
 $random = Get-Random -Maximum 1000
