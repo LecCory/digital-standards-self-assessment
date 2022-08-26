@@ -12,6 +12,11 @@ steps:
     inputs:
       command: "install"
       workingDir: "infrastructure"
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: "current"
+      artifactName: "pulumifile"
+      targetPath: "$(Build.SourcesDirectory)/infrastructure"
 
   - task: AzureCLI@2
     displayName: "Create State Stack"
@@ -27,12 +32,6 @@ steps:
       scriptLocation: "scriptPath"
       scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/createStack.ps1"
       workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
-
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      buildType: "current"
-      artifactName: "pulumifile"
-      targetPath: "$(Build.SourcesDirectory)/infrastructure"
 
   - task: Pulumi@1
     displayName: "Pulumi Up"
