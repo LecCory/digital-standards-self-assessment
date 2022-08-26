@@ -7,7 +7,7 @@ try {
     winget install pulumi
 }
 catch(e) {
-    {Write-Host "Winget not not available see exception:`n${e}"}
+    Write-Host "Winget not not available see exception:`n${e}"
 }
 
 $env:PULUMI_SKIP_UPDATE_CHECK="true"
