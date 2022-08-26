@@ -10,50 +10,50 @@ pool:
 variables:
   AzureSub: "Azure subscription 1(1)(1ff6c602-69fe-454f-a795-de22a178a6c0)"
 stages:
-  - stage: "Pulumi"
-    variables:
-      - group: dev
-    jobs:
-      - job: "SetupPulumiBackend"
-        steps:
-          - task: AzureCLI@2
-            env:
-              ENV_NAME: $(ENV)
-              PULUMI_CONFIG_PASSPHRASE: $(pass)
-              PROJECT_NAME: $(project)
-            inputs:
-              azureSubscription: $(AzureSub)
-              scriptType: "ps"
-              workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
-              addSpnToEnvironment: true
-              scriptLocation: scriptPath
-              scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/pulumiBackendConfig.ps1"
-            name: backend
-            displayName: Create Backend
+  # - stage: "Pulumi"
+  #   variables:
+  #     - group: dev
+  #   jobs:
+  #     - job: "SetupPulumiBackend"
+  #       steps:
+  #         - task: AzureCLI@2
+  #           env:
+  #             ENV_NAME: $(ENV)
+  #             PULUMI_CONFIG_PASSPHRASE: $(pass)
+  #             PROJECT_NAME: $(project)
+  #           inputs:
+  #             azureSubscription: $(AzureSub)
+  #             scriptType: "ps"
+  #             workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
+  #             addSpnToEnvironment: true
+  #             scriptLocation: scriptPath
+  #             scriptPath: "$(Build.SourcesDirectory)/infrastructure/helperScripts/pulumiBackendConfig.ps1"
+  #           name: backend
+  #           displayName: Create Backend
 
   - stage: "DeployDev"
     displayName: "Dev Deploy Infra & App"
-    dependsOn: Pulumi
+    # dependsOn: Pulumi
     variables:
       - group: dev
     jobs:
-      - job: "Deploy_Infra"
-        displayName: "Deploy Azure Resources"
+      # - job: "Deploy_Infra"
+      #   displayName: "Deploy Azure Resources"
 
-        variables:
-          BackendStorageKey: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.storageKey']]
-          BackendContainer: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.container']]
-          BackendStorageAccount: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.saAccount']]
-          currentAPIM: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.currentAPIM']]
+      #   variables:
+      #     BackendStorageKey: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.storageKey']]
+      #     BackendContainer: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.container']]
+      #     BackendStorageAccount: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.saAccount']]
+      #     currentAPIM: $[ stageDependencies.Pulumi.SetupPulumiBackend.outputs['backend.currentAPIM']]
 
-        steps:
-          - template: templates/deployResources_retrieveOutputs.yaml
-            parameters:
-              beStorageKey: $(BackendStorageKey)
-              beContainer: $(BackendContainer)
-              beStorageAccount: $(BackendStorageAccount)
-              azureSubscription: $(AzureSub)
-              existingAPIM: $(currentAPIM)
+      #   steps:
+      #     - template: templates/deployResources_retrieveOutputs.yaml
+      #       parameters:
+      #         beStorageKey: $(BackendStorageKey)
+      #         beContainer: $(BackendContainer)
+      #         beStorageAccount: $(BackendStorageAccount)
+      #         azureSubscription: $(AzureSub)
+      #         existingAPIM: $(currentAPIM)
 
       # - job: "Build_API"
       #   dependsOn: Deploy_Infra
@@ -74,14 +74,17 @@ stages:
 
       - job: "Configure_API_GW"
         dependsOn:
-          - Deploy_Infra
 
         condition: succeeded()
         variables:
-          faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
-          apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
-          apiGWName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGWName'] ]
-          rgName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectRG'] ]
+          faName: "dev-dssa-fa-c5c89b5b"
+          apiURL: "https://dev-dssa-apim-515.azure-api.net/"
+          apiGWName: "dev-dssa-apim-515"
+          rgName: "dev-dssa-rg-3eb7aa31"
+          # faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
+          # apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
+          # apiGWName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGWName'] ]
+          # rgName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectRG'] ]
 
         steps:
           - template: templates/configure_api_gw.yaml
@@ -123,16 +126,16 @@ stages:
       #         projectName: $(project)
       #         dbString: $(dbString)
 
-      - job: "Output_Static_URL"
-        dependsOn:
-          - Configure_API_GW
+      # - job: "Output_Static_URL"
+      #   dependsOn:
+      #     - Configure_API_GW
 
-          - Deploy_Infra
-        condition: and(succeeded('ImportData'),succeeded('Deploy_UI'),succeeded('Configure_API_GW'),succeeded('Deploy_API'),succeeded('Build_API'),succeeded('Deploy_Infra'))
-        variables:
-          staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
-        steps:
-          - template: templates/output_static_url.yaml
-            parameters:
-              staticURL: $(staticURL)
-              azureSubscription: $(AzureSub)
+      #     - Deploy_Infra
+      #   condition: and(succeeded('ImportData'),succeeded('Deploy_UI'),succeeded('Configure_API_GW'),succeeded('Deploy_API'),succeeded('Build_API'),succeeded('Deploy_Infra'))
+      #   variables:
+      #     staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
+      #   steps:
+      #     - template: templates/output_static_url.yaml
+      #       parameters:
+      #         staticURL: $(staticURL)
+      #         azureSubscription: $(AzureSub)

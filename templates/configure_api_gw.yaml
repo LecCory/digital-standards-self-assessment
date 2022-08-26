@@ -23,7 +23,9 @@ steps:
       azureSubscription: ${{ parameters.azureSubscription }}
       scriptType: "ps"
       scriptLocation: "inlineScript"
-      inlineScript: az apim api import -g ${{ parameters.rgName }} --service-name ${{ parameters.apiGWName }} --path api --specification-path ./swagger.json --specification-format OpenApiJson --api-id ${{ parameters.faName }} --subscription-required false
+      inlineScript: |
+      ls -l
+      az apim api import -g ${{ parameters.rgName }} --service-name ${{ parameters.apiGWName }} --path api --specification-path "./swagger.json" --specification-format OpenApiJson --api-id ${{ parameters.faName }} --subscription-required false
       workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
 
   - task: AzurePowerShell@5
