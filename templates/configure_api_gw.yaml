@@ -13,6 +13,7 @@ steps:
       APIURL: ${{ parameters.apiURL }}
     inputs:
       script: |
+        npm i js-yaml
         node fixSwagger.js
         node fixAPIMPolicy.js
       workingDirectory: "$(Build.SourcesDirectory)/infrastructure/helperScripts"
