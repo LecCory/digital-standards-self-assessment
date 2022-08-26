@@ -40,4 +40,4 @@ Write-Host "##vso[task.setvariable variable=projectAPIGWName;isSecret=true;isOut
 
 Write-Host "##vso[task.setvariable variable=projectSaKey;isSecret=true;isOutput=true]$projectSaKey"
 Write-Host "##vso[task.setvariable variable=projectDBString;isSecret=true;isOutput=true]$projectdbString"
-Write-Host "##vso[task.setvariable variable=projectStaticURL;isSecret=true;isOutput=true]$projectStaticURL"
+Write-Host "##vso[task.setvariable variable=projectStaticURL;isOutput=true]$projectStaticURL"
