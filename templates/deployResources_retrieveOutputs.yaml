@@ -7,12 +7,15 @@ parameters:
 
 steps:
   - checkout: self
-
   - task: Npm@1
+    displayName: "Pulumi dependecies install"
     inputs:
-      command: "install"
+      command: "custom"
       workingDir: "infrastructure"
+      customCommand: "install --no-audit"
+
   - task: DownloadPipelineArtifact@2
+    displayName: "Download Pulumi settings"
     inputs:
       buildType: "current"
       artifactName: "pulumifile"
