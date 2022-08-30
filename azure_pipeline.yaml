@@ -16,6 +16,8 @@ stages:
     jobs:
       - job: "SetupPulumiBackend"
         steps:
+          - checkout: self
+            clean: false
           - task: AzureCLI@2
             env:
               ENV_NAME: $(ENV)

@@ -1,4 +1,4 @@
-$env:RG_NAME="$(az group list -o tsv --query "[] | [? contains(name, 'pulumi-')] | [0].name")"
+$env:RG_NAME = "$(az group list -o tsv --query "[] | [? contains(name, 'pulumi-')] | [0].name")"
 $saName = $(az storage account list -g $env:RG_NAME -o tsv --query  "[] | [? contains(name, 'pulumi')] | [0].name")
 $env:sContainerName = $(az storage container list --account-name $saName  -o tsv --query "[] | [? contains(name, 'pulumi')] | [0].name")
 
@@ -7,3 +7,6 @@ pulumi login azblob://$env:sContainerName
 pulumi stack select $env:ENV_NAME -c
 
 pulumi config set azure-native:location canadacentral
+
+
+pulumi up -y -f -s $env:ENV_NAME --suppress-outputs
