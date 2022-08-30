@@ -38,7 +38,7 @@ export const functionApp = ({
   port: string;
   mongoDB: Output<string>;
   corsURLs: Output<string>[];
-  primaryConnectionString: Output<string>;
+  primaryConnectionString: Output<any>;
 }) => {
   const newFa = new web.WebApp(`${env}-${project}-fa-`, {
     resourceGroupName: resourceGroup,

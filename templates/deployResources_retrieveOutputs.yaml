@@ -30,11 +30,6 @@ steps:
       PULUMI_CONFIG_PASSPHRASE: $(pass)
       AZURE_STORAGE_KEY: ${{ parameters.beStorageKey }}
       AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
-      CURRENT_APIM: ${{ parameters.existingAPIM }}
-      ARM_CLIENT_ID: $(servicePrincipalId)
-      ARM_CLIENT_SECRET: $(servicePrincipalKey)
-      ARM_TENANT_ID: $(tenantId)
-      ARM_SUBSCRIPTION_ID: ${{ parameters.azureSubscription }}
 
     inputs:
       azureSubscription: ${{ parameters.azureSubscription }}
@@ -44,22 +39,22 @@ steps:
       workingDirectory: "$(Build.SourcesDirectory)/infrastructure"
       addSpnToEnvironment: true
 
-  # - task: Pulumi@1
-  #   displayName: "Pulumi Up"
-  #   env:
-  #     ENV_NAME: $(ENV)
-  #     PROJECT_NAME: $(project)
-  #     PULUMI_CONFIG_PASSPHRASE: $(pass)
-  #     AZURE_STORAGE_KEY: ${{ parameters.beStorageKey }}
-  #     AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
-  #     CURRENT_APIM: ${{ parameters.existingAPIM }}
-  #   inputs:
-  #     azureSubscription: ${{ parameters.azureSubscription }}
-  #     command: "up"
-  #     args: "-y -f --suppress-outputs"
-  #     loginArgs: "azblob://${{ parameters.beContainer }}"
-  #     cwd: "infrastructure"
-  #     stack: "$(ENV)"
+  - task: Pulumi@1
+    displayName: "Pulumi Up"
+    env:
+      ENV_NAME: $(ENV)
+      PROJECT_NAME: $(project)
+      PULUMI_CONFIG_PASSPHRASE: $(pass)
+      AZURE_STORAGE_KEY: ${{ parameters.beStorageKey }}
+      AZURE_STORAGE_ACCOUNT: ${{ parameters.beStorageAccount }}
+      CURRENT_APIM: ${{ parameters.existingAPIM }}
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscription }}
+      command: "up"
+      args: "-y -f --suppress-outputs"
+      loginArgs: "azblob://${{ parameters.beContainer }}"
+      cwd: "infrastructure"
+      stack: "$(ENV)"
 
   - task: AzureCLI@2
     displayName: "Retrieve new resource names"

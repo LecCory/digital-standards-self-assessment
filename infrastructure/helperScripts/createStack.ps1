@@ -8,5 +8,3 @@ pulumi stack select $env:ENV_NAME -c
 
 pulumi config set azure-native:location canadacentral
 
-
-pulumi up -y -f -s $env:ENV_NAME --suppress-outputs
