@@ -63,8 +63,11 @@ stages:
               existingAPIM: $(currentAPIM)
 
       - job: "Build_API"
+
         dependsOn: Deploy_Infra
         condition: succeeded()
+        variables:
+          faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
         steps:
           - template: templates/build_api.yaml
             parameters:
@@ -124,7 +127,7 @@ stages:
       - job: "Output_Static_URL"
         dependsOn:
           - Deploy_Infra
-        condition: and(succeeded('ImportData'),succeeded('Deploy_UI'),succeeded('Configure_API_GW'),succeeded('Deploy_API'),succeeded('Build_API'),succeeded('Deploy_Infra'))
+        condition: succeeded('Deploy_Infra')
         variables:
           staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
         steps:

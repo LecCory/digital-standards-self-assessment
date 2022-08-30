@@ -15,7 +15,7 @@ steps:
       azureSubscription: ${{ parameters.azureSubscription }}
       ScriptType: "InlineScript"
       Inline: |
-        npm i js-yaml
+        npm i --no-audit js-yaml
         node fixSwagger.js
         node fixAPIMPolicy.js
       errorActionPreference: "continue"
