@@ -23,7 +23,7 @@ steps:
       scriptType: "ps"
       scriptLocation: "inlineScript"
       inlineScript: |
-        npm install -g azure-functions-core-tools@3 --unsafe-perm true
+        npm install -g azure-functions-core-tools@4 --unsafe-perm true
         func azure functionapp publish ${{ parameters.faName }}
 
       workingDirectory: "$(Build.SourcesDirectory)/api"
