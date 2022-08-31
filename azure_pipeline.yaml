@@ -81,7 +81,7 @@ stages:
           - Deploy_Infra
           - Deploy_API
 
-        condition: and(succeeded(Deploy_Infra), succeeded(Deploy_API))
+        condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_API'))
         variables:
           faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
           apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
