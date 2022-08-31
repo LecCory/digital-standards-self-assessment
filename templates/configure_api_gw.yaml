@@ -6,6 +6,8 @@ parameters:
   azureSubscription: ""
 
 steps:
+  - checkout: self
+    clean: false
   - task: AzurePowerShell@5
     displayName: Build OpenAPI and Policy files
     env:
