@@ -64,56 +64,56 @@ stages:
               azureSubscription: $(AzureSub)
               existingAPIM: $(currentAPIM)
 
-      - job: "Deploy_API"
+      # - job: "Deploy_API"
 
-        dependsOn: Deploy_Infra
-        condition: succeeded()
-        variables:
-          faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
-        steps:
-          - template: templates/deploy_api.yaml
-            parameters:
-              faName: $(faName)
-              azureSubscription: $(AzureSub)
+      #   dependsOn: Deploy_Infra
+      #   condition: succeeded()
+      #   variables:
+      #     faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
+      #   steps:
+      #     - template: templates/deploy_api.yaml
+      #       parameters:
+      #         faName: $(faName)
+      #         azureSubscription: $(AzureSub)
 
-      - job: "Configure_API_GW"
-        dependsOn:
-          - Deploy_Infra
-          - Deploy_API
+      # - job: "Configure_API_GW"
+      #   dependsOn:
+      #     - Deploy_Infra
+      #     - Deploy_API
 
-        condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_API'))
-        variables:
-          faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
-          apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
-          apiGWName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGWName'] ]
-          rgName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectRG'] ]
+      #   condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_API'))
+      #   variables:
+      #     faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
+      #     apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
+      #     apiGWName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGWName'] ]
+      #     rgName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectRG'] ]
 
-        steps:
-          - template: templates/configure_api_gw.yaml
-            parameters:
-              faName: $(faName)
-              apiURL: $(apiURL)
-              apiGWName: $(apiGWName)
-              rgName: $(rgName)
-              azureSubscription: $(AzureSub)
+      #   steps:
+      #     - template: templates/configure_api_gw.yaml
+      #       parameters:
+      #         faName: $(faName)
+      #         apiURL: $(apiURL)
+      #         apiGWName: $(apiGWName)
+      #         rgName: $(rgName)
+      #         azureSubscription: $(AzureSub)
 
-      - job: "Deploy_UI"
-        dependsOn:
-          - Deploy_Infra
-          - Configure_API_GW
-        condition: succeeded()
-        variables:
-          apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
-          saKey: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectSaKey']]
-          storageAccount: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectSA']]
+      # - job: "Deploy_UI"
+      #   dependsOn:
+      #     - Deploy_Infra
+      #     - Configure_API_GW
+      #   condition: succeeded()
+      #   variables:
+      #     apiURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectAPIGW'] ]
+      #     saKey: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectSaKey']]
+      #     storageAccount: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectSA']]
 
-        steps:
-          - template: templates/deploy_ui.yaml
-            parameters:
-              apiURL: $(apiURL)
-              saKey: $(saKey)
-              storageAccount: $(storageAccount)
-              azureSubscription: $(AzureSub)
+      #   steps:
+      #     - template: templates/deploy_ui.yaml
+      #       parameters:
+      #         apiURL: $(apiURL)
+      #         saKey: $(saKey)
+      #         storageAccount: $(storageAccount)
+      #         azureSubscription: $(AzureSub)
 
       # - job: "Import_Data"
       #   dependsOn:
@@ -131,10 +131,11 @@ stages:
       - job: "Output_Static_URL"
         dependsOn:
           - Deploy_Infra
-          - Deploy_UI
-          - Configure_API_GW
-          - Deploy_API
-        condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_UI'), succeeded('Configure_API_GW'), succeeded('Deploy_API'))
+          # - Deploy_UI
+          # - Configure_API_GW
+          # - Deploy_API
+        # condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_UI'), succeeded('Configure_API_GW'), succeeded('Deploy_API'))
+        condition: succeeded()
         variables:
           staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
         steps:
