@@ -64,14 +64,14 @@ stages:
               azureSubscription: $(AzureSub)
               existingAPIM: $(currentAPIM)
 
-      - job: "Build_API"
+      - job: "Deploy_API"
 
         dependsOn: Deploy_Infra
         condition: succeeded()
         variables:
           faName: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.faName'] ]
         steps:
-          - template: templates/build_api.yaml
+          - template: templates/deploy_api.yaml
             parameters:
               faName: $(faName)
               azureSubscription: $(AzureSub)
@@ -129,7 +129,10 @@ stages:
       - job: "Output_Static_URL"
         dependsOn:
           - Deploy_Infra
-        condition: succeeded('Deploy_Infra')
+          - Deploy_UI
+          - Configure_API_GW
+          - Deploy_API
+        condition: and(succeeded('Deploy_Infra'), succeeded('Deploy_UI'), succeeded('Configure_API_GW'), succeeded('Deploy_API'))
         variables:
           staticURL: $[ dependencies.Deploy_Infra.outputs['pulumiOutputs.projectStaticURL']]
         steps:
